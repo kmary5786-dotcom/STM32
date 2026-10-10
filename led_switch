@@ -1,0 +1,37 @@
+	#include <stdio.h>
+	#include "stm32f4xx.h"
+
+	void delay (void)
+	{
+		 for (volatile unsigned int i=0; i<500000;i++);
+	}
+
+	int main (void)
+	{
+		RCC->AHB1ENR=(1<<0)|(1<<2);
+
+		//set and r P13
+		GPIOA->MODER&=~(3<<(5*2));
+		GPIOA->MODER|=(1<<(5*2));
+
+		GPIOC->MODER=(1<<(13));
+
+		while (1)
+			{
+				// LED ON
+			if ((GPIOC->IDR & (1<<13))==0)
+			{
+				GPIOA->ODR |= (1 << 5);
+			}
+			else
+			{
+			   // GPIOC->IDR & =(1<<(13)==0);
+				GPIOA->ODR &= ~(1 << 5);
+			}
+			delay();
+		}
+	}
+
+
+
+
